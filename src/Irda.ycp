@@ -1,0 +1,113 @@
+/**
+ * File:	modules/Irda.ycp
+ * Package:	Configuration of irda
+ * Summary:	Irda settings, input and output functions
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ *
+ * Representation of the configuration of irda.
+ * Input and output routines.
+ */
+
+{
+
+module "Irda";
+textdomain "irda";
+
+import "Progress";
+import "Service";
+
+/**
+ * Data was modified?
+ */
+global boolean modified = false;
+
+/**
+ * Should irda be started?
+ */
+global boolean start	= false;
+
+/**
+ * serial port used for irda
+ */
+global string port	= "";
+
+/**
+ * Read all irda settings
+ * @return true on success
+ */
+global boolean Read () {
+
+    port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
+    if (port == nil)
+	port = "";
+
+    start = (Service::Status ("irda") == 0);
+
+    return true;
+}
+
+/**
+ * Write all irda settings
+ * @return true on success
+ */
+global boolean Write () {
+
+    if (!modified)
+	return true;
+
+    /* Irda read dialog caption */
+    string caption	= _("Saving IrDA Configuration");
+
+    integer steps	= 2;
+    integer sl		= 500;
+
+    sleep(sl);
+
+    Progress::New (caption, " ", steps, [
+	    /* Progress stage 1/2 */
+	    _("Write the settings"),
+	    /* Progress stage 2/2 */
+	    _("Restart the service")
+	], [
+	    /* Progress step 1/2 */
+	    _("Writing the settings..."),
+	    /* Progress step 2/2 */
+	    _("Restarting service..."),
+	    /* Progress finished */
+	    _("Finished")
+	],
+	""
+    );
+
+    Progress::NextStage();
+    sleep(sl);
+
+    if (port != "")
+    {
+	SCR::Read (.sysconfig.irda.IRDA_PORT, port);
+    }
+
+    Progress::NextStage ();
+    sleep(sl);
+
+    Service::Stop ("irda");
+    if (start)
+    {
+	Service::Start ("irda");
+	Service::Adjust ("irda", "enable");
+    }
+    else
+    {
+	Service::Adjust ("irda", "disable");
+    }
+
+    Progress::NextStage();
+    sleep(sl);
+
+    return true;
+}
+
+/* EOF */
+}

@@ -1,0 +1,268 @@
+/**
+ * File:	include/irda/ui.ycp
+ * Package:	Configuration of irda
+ * Summary:	Dialogs definitions
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ */
+
+{
+
+textdomain "irda";
+
+import "Irda";
+import "Label";
+//import "Message";
+import "Popup";
+import "Require";
+import "Service";
+import "Wizard";
+
+
+/**
+ * Popup for testing IrDA
+ * @param port (to see if it was changed and service needs to be restarted)
+ */
+define boolean TestPopup (string port) {
+
+    boolean modified	= port != Irda::port;
+    // if service was originaly started
+    boolean orig_start	= false;
+
+    /**
+     * temporary start the service
+     * return error output
+     */
+    define string irda_tmp_start () {
+
+	map out = $[];
+	orig_start =  (Service::Status ("irda") == 0);
+
+	if (modified)
+	{
+	    // 1. save new configuration
+	    SCR::Write (.sysconfig.irda.IRDA_PORT, port);
+	    SCR::Write (.sysconfig.irda, nil);
+	}
+
+        // 2. start/restart the service
+	// when module cannot be loaded, Runlevel returns 0 -> use target.bash
+	if (!orig_start)
+	    out = (map) SCR::Execute (.target.bash_output, "rcirda start");
+	else if (modified)
+	    out = (map) SCR::Execute (.target.bash_output, "rcirda restart");
+
+	return out["stderr"]:"";
+    }
+
+    /**
+     * internal function
+     * return IrDA configuration to original state after testing
+     */
+    define void irda_tmp_stop () {
+
+	if (modified)
+	{
+	    SCR::Write (.sysconfig.irda.IRDA_PORT, Irda::port);
+	    SCR::Write (.sysconfig.irda, nil);
+	}
+
+	if (!orig_start)
+	    Service::RunInitScript ("irda", "stop");
+	else if (modified)
+	    Service::RunInitScript ("irda", "restart");
+    }
+
+    UI::OpenDialog(`opt(`decorated), `HBox(`HSpacing(1.5),
+    `VBox(
+        `VSpacing(1),
+        // Wait text label
+        `Label(_("Initializing -- please wait...")),
+        `VSpacing(1),
+        `PushButton(`id(`done), `opt(`default), Label::AbortButton()),
+        `VSpacing(1)),
+    `HSpacing(1.5)
+    ));
+
+    string start = irda_tmp_start ();
+    UI::CloseDialog();
+    if (start != "")
+    {
+	Popup::Error (sformat ("%1
+%2", "Cannot start irda",//Message::CannotStartService ("irda"),
+ start));
+	irda_tmp_stop ();
+	return false;
+    }
+
+    // run test application
+    SCR::Execute (.background.run_output, "/usr/bin/irdadump");
+
+
+    // construct the dialog
+    UI::OpenDialog(`opt(`decorated), `HBox(`HSpacing(1.5),
+    `VSpacing(18),
+    `VBox(
+        `HSpacing(60),
+        `VSpacing(0.5),
+	// Popup label (heading)
+        `Label(_("IrDA Test")),
+	// Popup label (info text), please keep translation
+        `Label (_("Do something...")),
+        `VSpacing(0.5),
+        `LogView (`id (`log), "", 10, 0),
+        `VSpacing(0.5),
+        `PushButton(`id(`done), `opt(`default), Label::OKButton()),
+        `VSpacing(0.5)),
+    `HSpacing(1.5)
+    ));
+
+    // read the output of test application
+    string test_output = "";
+    symbol ret = nil;
+    do
+    {
+	ret = (symbol) UI::PollInput();
+        if ((boolean) SCR::Read(.background.output_open) &&
+	    (integer) SCR::Read(.background.newlines)>0)
+        {
+            // read the output line from irw:
+            test_output = (string)
+		select ((list)SCR::Read(.background.newout), 0, nil);
+	    if (test_output != nil)
+		UI::ChangeWidget (`id(`log), `LastLine, test_output + "\n");
+        }
+	else if (!(boolean)SCR::Read(.background.output_open))
+	{
+	    // error text
+	    Popup::Error(_("The testing application is not responding."));
+	    ret = `ok;
+	}
+    }
+    while (ret == nil);
+
+    SCR::Execute(.background.kill);
+    irda_tmp_stop ();
+    UI::CloseDialog();
+
+    return true;
+}
+
+
+/**
+ * Dialog for seting up IrDA
+ */
+define symbol IrDADialog () {
+
+    // For translators: Caption of the dialog
+    string caption = _("IrDA Configuration");
+
+    string help = "";
+
+    boolean start	= Irda::start;
+    string port		= Irda::port;
+
+    list ports	= [ "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3" ];
+
+    term con = `HBox (`HSpacing (3), `VBox (
+        `VSpacing (2),
+        `RadioButtonGroup(`id(`rd),
+	    `Left(`HVSquash(`VBox (
+                `Left (`RadioButton(`id(`no), `opt (`notify),
+		    // radio button label
+		    _("Do No&t Start IrDA"), !start)),
+                `Left(`RadioButton(`id(`yes), `opt (`notify),
+		    // radio button label
+		    _("&Start IrDA"), start)))))
+	),
+        `VSpacing (),
+	// frame label
+	`Frame (_("IrDA Settings"), `HBox(`HSpacing (),
+	    `VBox(
+		`VSpacing (),
+		`ComboBox (`id(`ports), `opt(`notify, `hstretch, `editable),
+		    // combobox label
+		    _("Port"), ports),
+		`VSpacing (0.5),
+		`Right(
+		    // button label
+		    `PushButton (`id(`test), `opt(`key_F6), _("&Test"))),
+		`VSpacing (0.5)
+	    ), `HSpacing ()
+	)),
+	`VStretch ()
+    ), `HSpacing(3));
+
+
+    Wizard::SetContentsButtons (caption, con, help,
+	Label::BackButton (), Label::FinishButton());
+
+
+    UI::ChangeWidget (`id(`ports), `Value, port);
+
+    foreach (symbol widget, [`ports, `test],{
+	UI::ChangeWidget (`id (widget), `Enabled, start);
+    });
+
+    symbol ret = nil;
+    do
+    {
+	ret	= (symbol) UI::UserInput ();
+	port	= (string) UI::QueryWidget (`id(`ports), `Value);
+
+        if (ret == `yes || ret == `no)
+	{
+            start = (ret == `yes);
+	    if (start && !Require::RequireAndConflictTarget (["irda"], [],
+		// popup label (install required application)
+		_("To use IrDA , package '%1' is required.
+Install it now?
+")))
+
+	    {
+		start = false;
+		UI::ChangeWidget (`id(`rd), `CurrentButton, `no);
+	    }
+	    foreach (symbol widget, [`ports, `test], {
+		UI::ChangeWidget (`id (widget), `Enabled, start);
+	    });
+	}
+	if (ret == `test)
+	{
+	    TestPopup (port);
+	}
+
+    } while (!contains ([`back, `abort, `cancel, `next, `ok], ret));
+
+    if (ret == `next && (start != Irda::start || port != Irda::port))
+    {
+	Irda::modified	= true;
+	Irda::start	= start;
+	Irda::port	= port;
+    }
+    return ret;
+}
+
+/**
+ * Thew whole sequence
+ */
+define symbol IrDASequence () {
+
+    Wizard::CreateDialog();
+    Wizard::SetDesktopIcon("irda");
+
+    Irda::Read ();
+
+    symbol ret = IrDADialog ();
+    if (ret == `next || ret == `finish)
+    {
+	Irda::Write ();
+    }
+
+    UI::CloseDialog ();
+    return ret;
+}
+
+/* EOF */
+}
