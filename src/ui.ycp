@@ -325,7 +325,7 @@ define symbol IrDADialog () {
 	    SCR::Read (.target.size, "/dev/pilot") == -1 &&
 	    Package::Installed ("pilot-link") &&
 	    // yes/no popup
-	    Popup::YesNo (_("If you have a Palm device using IrDA port,
+	    Popup::YesNo (_("If you have a Palm device using an IrDA port,
 it is useful to have a symbolic link between the IR device and the pilot device.
 Create it now?")))
 	{
