@@ -91,11 +91,11 @@ global define boolean Write () {
     if (start)
     {
 	Service::Start ("irda");
-	Service::Adjust ("irda", "enable");
+	Service::Enable ("irda");
     }
     else
     {
-	Service::Adjust ("irda", "disable");
+	Service::Disable ("irda");
     }
 
     Progress::NextStage();
