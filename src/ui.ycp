@@ -190,13 +190,13 @@ define symbol IrDADialog () {
     string caption = _("IrDA Configuration");
 
     // help text for IrDA 1/3
-    string help = _("<p>Here you can configure Infra red interface (<b>IrDA</b>) for your computer.</p>") +
+    string help = _("<p>Here, configure an infrared interface (<b>IrDA</b>) for your computer.</p>") +
 
     // help text for IrDA 2/3
-    _("<p>You have to choose correct serial port in <b>Port</b> entry. Have a look at your BIOS-Setup, to find out which is correct.</p>") +
+    _("<p>Choose the correct serial port for <b>Port</b>. Refer to your BIOS setup to find out which is correct.</p>") +
 
     // help text for IrDA 3/3
-    _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) to the range of your Infra Red port and push <b>Test</b>.</p>");
+    _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) in range of your infrared port and push <b>Test</b>.</p>");
 
     boolean start	= Irda::start;
     string port		= Irda::port;
