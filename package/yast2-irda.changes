@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 23 11:00:08 CEST 2004 - jsuchome@suse.cz
+
+- do not rewrite sysconfig/irda file with empty one (#45353)
+- 2.10.3
+
+-------------------------------------------------------------------
 Wed Sep  1 15:27:48 CEST 2004 - jsuchome@suse.cz
 
 - updated desktop file

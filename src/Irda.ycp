@@ -33,15 +33,31 @@ global boolean start	= false;
  */
 global string port	= "";
 
+
+
+/**
+ * Read irda settings from /etc/sysconfig/irda
+ * @return true on success
+ */
+global define boolean ReadSysconfig () {
+
+
+    if (SCR::Read (.target.size, "/etc/sysconfig/irda") != -1)
+    {
+	port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
+	if (port == nil)
+	    port = "";
+    }
+    return port == "";
+}
+
 /**
  * Read all irda settings
  * @return true on success
  */
 global define boolean Read () {
 
-    port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
-    if (port == nil)
-	port = "";
+    ReadSysconfig ();
 
     start = (Service::Status ("irda") == 0);
 

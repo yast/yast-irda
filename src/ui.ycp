@@ -252,10 +252,19 @@ define symbol IrDADialog () {
         if (ret == `yes || ret == `no)
 	{
             start = (ret == `yes);
-	    if (start && !Package::InstallAll (["irda"]))
+	    if (start && !Package::InstalledAll (["irda"]))
 	    {
-		start = false;
-		UI::ChangeWidget (`id(`rd), `CurrentButton, `no);
+		if (Package::InstallAll (["irda"]))
+		{
+		    Irda::ReadSysconfig ();
+		    port = Irda::port;
+		    UI::ChangeWidget (`id(`ports), `Value, port);
+		}
+		else
+		{
+		    start = false;
+		    UI::ChangeWidget (`id(`rd), `CurrentButton, `no);
+		}
 	    }
 	    foreach (symbol widget, [`ports, `test], {
 		UI::ChangeWidget (`id (widget), `Enabled, start);
