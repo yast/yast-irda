@@ -137,9 +137,9 @@ define boolean TestPopup (string port) {
 	    (integer) SCR::Read(.background.newlines)>0)
         {
             // read the output line from irw:
-            test_output = (string)
-		select ((list)SCR::Read(.background.newout), 0, nil);
-	    if (test_output != nil)
+	    list out	= (list)SCR::Read(.background.newout);
+	    test_output = out[0]:"";
+	    if (test_output != "")
 		UI::ChangeWidget (`id(`log), `LastLine, test_output + "\n");
         }
 	else if (!(boolean)SCR::Read(.background.output_open))
