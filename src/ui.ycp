@@ -196,7 +196,7 @@ define symbol IrDADialog () {
     _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) in range of your infrared port and push <b>Test</b>.</p>") +
 
     // help text for IrDA 4/4
-    _("<p>With some mobile phones the speed of the infrared connection needs to be limited - try to set <b>Maximum baud rate</b> if you encounter problems.</p>");
+    _("<p>For some mobile phones, the speed of the infrared connection must be limited. Try setting <b>Maximum Baud Rate</b> if you encounter problems.</p>");
 
     boolean start	= Irda::start;
     string port		= Irda::port;
@@ -234,16 +234,16 @@ define symbol IrDADialog () {
 	)),
 	`VSpacing (0.5),
 	// frame label
-	`Frame (_("Baud rate limit"), `HBox (`HSpacing (),
+	`Frame (_("Baud Rate Limit"), `HBox (`HSpacing (),
 	    `VBox (
 		`VSpacing (),
 		`Left (`CheckBox (`id(`limited), `opt(`notify),
 		    // checkbox label
-		    _("&Limit baud rate"), brate_limited)),
+		    _("&Limit Baud Rate"), brate_limited)),
 		`VSpacing (0.5),
 		`ComboBox (`id(`brate), `opt(`notify, `hstretch),
 		    // combobox label
-		    _("&Maximum baud rate"), rates),
+		    _("&Maximum Baud Rate"), rates),
 		`VSpacing (0.5)
 	    ), `HSpacing ()
 	)),
@@ -326,7 +326,7 @@ define symbol IrDADialog () {
 	    Package::Installed ("pilot-link") &&
 	    // yes/no popup
 	    Popup::YesNo (_("If you have a Palm device using IrDA port,
-it is useful to have symbolic link between IR device and pilot device.
+it is useful to have a symbolic link between the IR device and the pilot device.
 Create it now?")))
 	{
 	    Irda::link_pilot	= true;

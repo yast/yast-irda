@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  7 16:03:38 CET 2005 - jsuchome@suse.cz
+
+- merged texts from proofread
+- 2.11.2
+
+-------------------------------------------------------------------
 Thu Nov 18 16:25:34 CET 2004 - jsuchome@suse.cz
 
 - possibility to modify MAX_BAUD_RATE (#40814) 
