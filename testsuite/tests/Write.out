@@ -1,0 +1,28 @@
+Dump	==== nothing modified: =====================
+Return	true
+Dump	==== stop irda: ============================
+Read	.init.scripts.exists "irda" true
+Execute	.target.bash "/etc/init.d/irda stop" $["TERM":"raw"] 0
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.runlevel "irda" $["irda":$["start":[3]]]
+Read	.init.scripts.comment "irda" $[]
+Execute	.target.bash_output "/sbin/insserv -r /etc/init.d/irda" $["exit":0]
+Return	true
+Dump	==== start irda, create link: ==============
+Write	.sysconfig.irda.IRDA_PORT "new_port" true
+Write	.sysconfig.irda nil true
+Read	.init.scripts.exists "irda" true
+Execute	.target.bash "/etc/init.d/irda stop" $["TERM":"raw"] 0
+Read	.init.scripts.exists "irda" true
+Execute	.target.bash "/etc/init.d/irda start" $["TERM":"raw"] 0
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.exists "irda" true
+Read	.init.scripts.runlevel "irda" $[]
+Read	.init.scripts.comment "irda" $[]
+Execute	.target.bash_output "/sbin/insserv -d /etc/init.d/irda" $["exit":0]
+Execute	.target.symlink "/dev/ircomm0" "/dev/pilot" true
+Execute	.target.bash "/sbin/resmgr add /dev/pilot desktop" 0
+Return	true

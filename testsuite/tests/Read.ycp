@@ -1,0 +1,50 @@
+/**
+ *  Read.ycp
+ *  Test of Irda::Read function
+ *  Author: Jiri Suchomel <jsuchome@suse.cz>
+ *  $Id: Read.ycp 22830 2005-03-29 10:53:59Z jsuchome $
+ */
+
+{
+
+    // testedfiles: Irda.ycp Service.ycp
+    import "Testsuite";
+    import "Irda";
+
+    map READ = $[
+	"init": $[
+	    "scripts": $[
+		"exists"	: true
+	    ],
+	],
+	"target": $[
+	    "stat"	: $[],
+	]
+    ];
+
+    Testsuite::Dump ("==== reading... ============================");
+
+    Testsuite::Test(``(Irda::Read ()), [ READ, $[], $[] ], 0);
+
+    Testsuite::Dump ("============================================");
+
+    READ = $[
+	"init": $[
+	    "scripts": $[
+		"exists"	: true
+	    ],
+	],
+	"target": $[
+	    "stat"	: $[ 1:2 ],
+	],
+	"sysconfig"	: $[
+	    "irda"	: $[
+		"IRDA_PORT"		: "/dev/ttyS1",
+		"IRDA_MAX_BAUD_RATE"	: nil,
+	    ],
+	],
+    ];
+
+    Testsuite::Test(``(Irda::Read ()), [ READ, $[], $[] ], 0);
+}
+

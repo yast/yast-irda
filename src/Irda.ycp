@@ -15,6 +15,7 @@
 module "Irda";
 textdomain "irda";
 
+import "FileUtils";
 import "Progress";
 import "Service";
 
@@ -50,7 +51,7 @@ global boolean link_pilot	= false;
 global define boolean ReadSysconfig () {
 
 
-    if (SCR::Read (.target.size, "/etc/sysconfig/irda") != -1)
+    if (FileUtils::Exists ("/etc/sysconfig/irda"))
     {
 	port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
 	if (port == nil)

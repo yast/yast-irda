@@ -1,0 +1,61 @@
+/**
+ *  Write.ycp
+ *  Test of Irda::Write function
+ *  Author: Jiri Suchomel <jsuchome@suse.cz>
+ *  $Id: Write.ycp 22830 2005-03-29 10:53:59Z jsuchome $
+ */
+
+{
+
+    // testedfiles: Irda.ycp Service.ycp
+    import "Testsuite";
+    import "Irda";
+
+    map READ = $[
+	"init": $[
+	    "scripts": $[
+		"exists"	: true,
+		"runlevel"	: $[
+		    "irda"	: $[
+			"start"	: [ 3 ],
+		    ],
+		],
+		"comment"	: $[],
+	    ],
+	],
+	"target": $[
+	    "stat"	: $[],
+	]
+    ];
+
+    map EX = $[
+	"target": $[
+	    "bash_output"	: $[
+		"exit"		: 0
+	    ],
+	    "bash"		: 0,
+	    "symlink"		: true,
+	]
+    ];
+
+    Testsuite::Dump ("==== nothing modified: =====================");
+
+    Testsuite::Test(``(Irda::Write ()), [ READ, $[], EX ], 0);
+
+    Irda::modified	= true;
+
+    Testsuite::Dump ("==== stop irda: ============================");
+
+    Testsuite::Test(``(Irda::Write ()), [ READ, $[], EX ], 0);
+
+    Testsuite::Dump ("==== start irda, create link: ==============");
+
+    Irda::start		= true;
+    Irda::link_pilot	= true;
+    Irda::port		= "new_port";
+    READ["init","scripts","runlevel"]	= $[];
+
+    Testsuite::Test(``(Irda::Write ()), [ READ, $[], EX ], 0);
+
+}
+
