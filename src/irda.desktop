@@ -21,3 +21,4 @@ Exec=/sbin/yast2 irda
 
 Name=IrDA
 GenericName=Configure IrDA
+X-KDE-SubstituteUID=true
