@@ -114,6 +114,15 @@ global define boolean Write () {
 	Service::Disable ("irda");
     }
 
+    // create symlink to /dev/pilot
+    if (start && SCR::Read (.target.size, "/dev/pilot") == -1)
+    {
+	if ((boolean)SCR::Execute (.target.symlink,"/dev/ircomm0","/dev/pilot"))
+	{
+	    SCR::Execute (.target.bash, "/sbin/resmgr add /dev/pilot desktop");
+	}
+    }
+
     Progress::NextStage();
 
     return true;
