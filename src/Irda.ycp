@@ -59,11 +59,7 @@ global boolean Write () {
 
     /* Irda read dialog caption */
     string caption	= _("Saving IrDA Configuration");
-
     integer steps	= 2;
-    integer sl		= 500;
-
-    sleep(sl);
 
     Progress::New (caption, " ", steps, [
 	    /* Progress stage 1/2 */
@@ -82,15 +78,14 @@ global boolean Write () {
     );
 
     Progress::NextStage();
-    sleep(sl);
 
     if (port != "")
     {
-	SCR::Read (.sysconfig.irda.IRDA_PORT, port);
+	SCR::Write (.sysconfig.irda.IRDA_PORT, port);
+	SCR::Write (.sysconfig.irda, nil);
     }
 
     Progress::NextStage ();
-    sleep(sl);
 
     Service::Stop ("irda");
     if (start)
@@ -104,7 +99,6 @@ global boolean Write () {
     }
 
     Progress::NextStage();
-    sleep(sl);
 
     return true;
 }

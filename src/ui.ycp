@@ -13,9 +13,9 @@ textdomain "irda";
 
 import "Irda";
 import "Label";
-//import "Message";
+import "Message";
+import "Package";
 import "Popup";
-import "Require";
 import "Service";
 import "Wizard";
 
@@ -90,8 +90,7 @@ define boolean TestPopup (string port) {
     if (start != "")
     {
 	Popup::Error (sformat ("%1
-%2", "Cannot start irda",//Message::CannotStartService ("irda"),
- start));
+%2", Message::CannotStartService ("irda"), start));
 	irda_tmp_stop ();
 	return false;
     }
@@ -99,27 +98,36 @@ define boolean TestPopup (string port) {
     // run test application
     SCR::Execute (.background.run_output, "/usr/bin/irdadump");
 
-
     // construct the dialog
     UI::OpenDialog(`opt(`decorated), `HBox(`HSpacing(1.5),
     `VSpacing(18),
     `VBox(
-        `HSpacing(60),
+        `HSpacing(80),
         `VSpacing(0.5),
 	// Popup label (heading)
         `Label(_("IrDA Test")),
-	// Popup label (info text), please keep translation
-        `Label (_("Do something...")),
         `VSpacing(0.5),
-        `LogView (`id (`log), "", 10, 0),
+        `LogView (`id (`log), "", 8, 0),
         `VSpacing(0.5),
-        `PushButton(`id(`done), `opt(`default), Label::OKButton()),
+        `LogView (`id (`discovery), "", 5, 0),
+        `VSpacing(0.5),
+	`HBox (
+	    // button label
+	    `PushButton (`id(`done), `opt(`key_F9), _("&Close")),
+	    // button label
+	    `PushButton (`id(`stop), `opt(`key_F5), _("&Stop")),
+	    // button label
+	    `PushButton (`id(`cont), `opt(`key_F6), _("C&ontinue"))
+	),
         `VSpacing(0.5)),
     `HSpacing(1.5)
     ));
 
     // read the output of test application
-    string test_output = "";
+    string test_output	= "";
+    string discovery	= "";
+    UI::ChangeWidget (`id (`cont), `Enabled, false);
+
     symbol ret = nil;
     do
     {
@@ -139,6 +147,28 @@ define boolean TestPopup (string port) {
 	    Popup::Error(_("The testing application is not responding."));
 	    ret = `ok;
 	}
+	string disc = (string)
+	    SCR::Read (.target.string, "/proc/net/irda/discovery");
+	if (disc != discovery)
+	{
+	    discovery	= disc;
+	    UI::ChangeWidget (`id(`discovery), `Value, discovery);
+	}
+	if (ret == `stop)
+	{
+	    SCR::Execute(.background.kill);
+	    UI::ChangeWidget (`id (`cont), `Enabled, true);
+	    UI::ChangeWidget (`id (`stop), `Enabled, false);
+	    ret = (symbol) UI::UserInput ();
+	}
+	if (ret == `cont)
+	{
+	    SCR::Execute (.background.run_output, "/usr/bin/irdadump");
+	    UI::ChangeWidget (`id (`stop), `Enabled, true);
+	    UI::ChangeWidget (`id (`cont), `Enabled, false);
+	    ret = nil;
+	}
+	sleep (10);
     }
     while (ret == nil);
 
@@ -158,7 +188,14 @@ define symbol IrDADialog () {
     // For translators: Caption of the dialog
     string caption = _("IrDA Configuration");
 
-    string help = "";
+    // help text for IrDA 1/3
+    string help = _("<p>Here you can configure Infra red interface (<b>IrDA</b>) for your computer.</p>") +
+
+    // help text for IrDA 2/3
+    _("<p>You have to choose correct serial port in <b>Port</b> entry. Have a look at your BIOS-Setup, to find out which is correct.</p>") +
+
+    // help text for IrDA 3/3
+    _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) to the range of your Infra Red port and push <b>Test</b>.</p>");
 
     boolean start	= Irda::start;
     string port		= Irda::port;
@@ -214,12 +251,7 @@ define symbol IrDADialog () {
         if (ret == `yes || ret == `no)
 	{
             start = (ret == `yes);
-	    if (start && !Require::RequireAndConflictTarget (["irda"], [],
-		// popup label (install required application)
-		_("To use IrDA , package '%1' is required.
-Install it now?
-")))
-
+	    if (start && !Package::InstallAll (["irda"]))
 	    {
 		start = false;
 		UI::ChangeWidget (`id(`rd), `CurrentButton, `no);
