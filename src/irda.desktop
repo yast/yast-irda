@@ -8,7 +8,7 @@ X-KDE-HasReadOnlyMode=true
 X-KDE-Library=yast2
 X-SuSE-YaST-Call=irda
 
-X-SuSE-YaST-Group=Misc
+X-SuSE-YaST-Group=Hardware
 X-SuSE-YaST-Argument=
 X-SuSE-YaST-RootOnly=true
 X-SuSE-YaST-AutoInst=
@@ -19,5 +19,5 @@ X-SuSE-YaST-AutoInstResource=irda
 Icon=irda
 Exec=/sbin/yast2 irda 
 
-Name=Irda
-GenericName=Configure irda
+Name=IrDA
+GenericName=Configure IrDA
