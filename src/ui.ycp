@@ -113,12 +113,9 @@ define boolean TestPopup (string port) {
         `LogView (`id (`discovery), "", 5, 0),
         `VSpacing(0.5),
 	`HBox (
-	    // button label
-	    `PushButton (`id(`done), `opt(`key_F9), _("&Close")),
-	    // button label
-	    `PushButton (`id(`stop), `opt(`key_F5), _("&Stop")),
-	    // button label
-	    `PushButton (`id(`cont), `opt(`key_F6), _("C&ontinue"))
+	    `PushButton (`id(`done), `opt(`key_F9), Label::CloseButton ()),
+	    `PushButton (`id(`stop), `opt(`key_F5), Label::StopButton ()),
+	    `PushButton (`id(`cont), `opt(`key_F6), Label::ContinueButton ())
 	),
         `VSpacing(0.5)),
     `HSpacing(1.5)
@@ -189,19 +186,25 @@ define symbol IrDADialog () {
     // For translators: Caption of the dialog
     string caption = _("IrDA Configuration");
 
-    // help text for IrDA 1/3
+    // help text for IrDA 1/4
     string help = _("<p>Here, configure an infrared interface (<b>IrDA</b>) for your computer.</p>") +
 
-    // help text for IrDA 2/3
+    // help text for IrDA 2/4
     _("<p>Choose the correct serial port for <b>Port</b>. Refer to your BIOS setup to find out which is correct.</p>") +
 
-    // help text for IrDA 3/3
-    _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) in range of your infrared port and push <b>Test</b>.</p>");
+    // help text for IrDA 3/4
+    _("<p>To test if it works, put your IrDA device (phone, PDA, etc.) in range of your infrared port and push <b>Test</b>.</p>") +
+
+    // help text for IrDA 4/4
+    _("<p>With some mobile phones the speed of the infrared connection needs to be limited - try to set <b>Maximum baud rate</b> if you encounter problems.</p>");
 
     boolean start	= Irda::start;
     string port		= Irda::port;
+    string baud_rate	= Irda::max_baud_rate;
+    boolean brate_limited	= (baud_rate != "0");
 
     list ports	= [ "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3" ];
+    list rates	= [ "9600", "19200", "38400", "57600", "115200" ];
 
     term con = `HBox (`HSpacing (3), `VBox (
         `VSpacing (2),
@@ -216,16 +219,31 @@ define symbol IrDADialog () {
 	),
         `VSpacing (),
 	// frame label
-	`Frame (_("IrDA Settings"), `HBox(`HSpacing (),
-	    `VBox(
+	`Frame (_("Basic IrDA Settings"), `HBox (`HSpacing (),
+	    `VBox (
 		`VSpacing (),
 		`ComboBox (`id(`ports), `opt(`notify, `hstretch, `editable),
 		    // combobox label
-		    _("Port"), ports),
+		    _("&Port"), ports),
 		`VSpacing (0.5),
 		`Right(
 		    // button label
 		    `PushButton (`id(`test), `opt(`key_F6), _("&Test"))),
+		`VSpacing (0.5)
+	    ), `HSpacing ()
+	)),
+	`VSpacing (0.5),
+	// frame label
+	`Frame (_("Baud rate limit"), `HBox (`HSpacing (),
+	    `VBox (
+		`VSpacing (),
+		`Left (`CheckBox (`id(`limited), `opt(`notify),
+		    // checkbox label
+		    _("&Limit baud rate"), brate_limited)),
+		`VSpacing (0.5),
+		`ComboBox (`id(`brate), `opt(`notify, `hstretch),
+		    // combobox label
+		    _("&Maximum baud rate"), rates),
 		`VSpacing (0.5)
 	    ), `HSpacing ()
 	)),
@@ -236,19 +254,28 @@ define symbol IrDADialog () {
     Wizard::SetContentsButtons (caption, con, help,
 	Label::BackButton (), Label::FinishButton());
 
-
     UI::ChangeWidget (`id(`ports), `Value, port);
 
-    foreach (symbol widget, [`ports, `test],{
+    foreach (symbol widget, [`ports, `test, `limited],{
 	UI::ChangeWidget (`id (widget), `Enabled, start);
     });
+
+    UI::ChangeWidget (`id (`brate), `Enabled, start && brate_limited);
+    if (brate_limited && contains (rates, baud_rate))
+    {
+	UI::ChangeWidget (`id(`brate), `Value, baud_rate);
+    }
 
     symbol ret = nil;
     do
     {
-	ret	= (symbol) UI::UserInput ();
-	port	= (string) UI::QueryWidget (`id(`ports), `Value);
+	ret		= (symbol) UI::UserInput ();
+	port		= (string) UI::QueryWidget (`id(`ports), `Value);
 
+	if (brate_limited)
+	{
+	    baud_rate	= (string) UI::QueryWidget (`id(`brate), `Value);
+	}
         if (ret == `yes || ret == `no)
 	{
             start = (ret == `yes);
@@ -266,9 +293,17 @@ define symbol IrDADialog () {
 		    UI::ChangeWidget (`id(`rd), `CurrentButton, `no);
 		}
 	    }
-	    foreach (symbol widget, [`ports, `test], {
+	    foreach (symbol widget, [`ports, `test, `limited], {
 		UI::ChangeWidget (`id (widget), `Enabled, start);
 	    });
+	    UI::ChangeWidget (`id (`brate), `Enabled, start && brate_limited);
+	}
+	if (ret == `limited)
+	{
+	    brate_limited = (boolean) UI::QueryWidget (`id(`limited), `Value);
+	    UI::ChangeWidget (`id (`brate), `Enabled, start && brate_limited);
+	    if (!brate_limited)
+		baud_rate	= "0";
 	}
 	if (ret == `test)
 	{
@@ -277,11 +312,25 @@ define symbol IrDADialog () {
 
     } while (!contains ([`back, `abort, `cancel, `next, `ok], ret));
 
-    if (ret == `next && (start != Irda::start || port != Irda::port))
+    if (ret == `next &&
+	(start != Irda::start || port != Irda::port ||
+	baud_rate != Irda::max_baud_rate))
     {
-	Irda::modified	= true;
-	Irda::start	= start;
-	Irda::port	= port;
+	Irda::modified		= true;
+	Irda::start		= start;
+	Irda::port		= port;
+	Irda::max_baud_rate	= baud_rate;
+
+	if (start &&
+	    SCR::Read (.target.size, "/dev/pilot") == -1 &&
+	    Package::Installed ("pilot-link") &&
+	    // yes/no popup
+	    Popup::YesNo (_("If you have a Palm device using IrDA port,
+it is useful to have symbolic link between IR device and pilot device.
+Create it now?")))
+	{
+	    Irda::link_pilot	= true;
+	}
     }
     return ret;
 }

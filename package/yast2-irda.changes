@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 18 16:25:34 CET 2004 - jsuchome@suse.cz
+
+- possibility to modify MAX_BAUD_RATE (#40814) 
+- ask for creating the pilot link
+- 2.11.1
+
+-------------------------------------------------------------------
 Tue Nov  9 13:14:59 CET 2004 - jsuchome@suse.cz
 
 - created link for /dev/pilot (#47804)

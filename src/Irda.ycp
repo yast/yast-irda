@@ -33,11 +33,19 @@ global boolean start	= false;
  */
 global string port	= "";
 
+/**
+ * Maximum baud rate for the IrDA serial port
+ */
+global string max_baud_rate	= "0";
 
+/**
+ * If link to /ev/pilot should be created
+ */
+global boolean link_pilot	= false;
 
 /**
  * Read irda settings from /etc/sysconfig/irda
- * @return true on success
+ * @return true when file exists
  */
 global define boolean ReadSysconfig () {
 
@@ -47,8 +55,13 @@ global define boolean ReadSysconfig () {
 	port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
 	if (port == nil)
 	    port = "";
+
+	max_baud_rate = (string) SCR::Read (.sysconfig.irda.IRDA_MAX_BAUD_RATE);
+	if (max_baud_rate == nil)
+	    max_baud_rate = "0";
+	return true;
     }
-    return port == "";
+    return false;
 }
 
 /**
@@ -114,8 +127,8 @@ global define boolean Write () {
 	Service::Disable ("irda");
     }
 
-    // create symlink to /dev/pilot
-    if (start && SCR::Read (.target.size, "/dev/pilot") == -1)
+    // create symlink to /dev/pilot (#47804)
+    if (link_pilot)
     {
 	if ((boolean)SCR::Execute (.target.symlink,"/dev/ircomm0","/dev/pilot"))
 	{
