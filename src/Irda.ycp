@@ -6,7 +6,7 @@
  *
  * $Id$
  *
- * Representation of the configuration of irda.
+ * Representation of the IrDA configuration.
  * Input and output routines.
  */
 
@@ -37,7 +37,7 @@ global string port	= "";
  * Read all irda settings
  * @return true on success
  */
-global boolean Read () {
+global define boolean Read () {
 
     port = (string) SCR::Read (.sysconfig.irda.IRDA_PORT);
     if (port == nil)
@@ -52,7 +52,7 @@ global boolean Read () {
  * Write all irda settings
  * @return true on success
  */
-global boolean Write () {
+global define boolean Write () {
 
     if (!modified)
 	return true;

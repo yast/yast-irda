@@ -22,7 +22,8 @@ import "Wizard";
 
 /**
  * Popup for testing IrDA
- * @param port (to see if it was changed and service needs to be restarted)
+ * @param port the serial port use for IrDA
+ * (to see if it was changed and service needs to be restarted)
  */
 define boolean TestPopup (string port) {
 

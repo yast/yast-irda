@@ -30,8 +30,9 @@ include "irda/ui.ycp";
 // --------------------------------- cmd-line handlers
 
 /**
- * Change basic configuration
+ * Command line handler for changing basic configuration
  * @param options  a list of parameters passed as args
+ * (currently only "port" key is expected)
  * @return boolean true on success
  */
 define boolean IrdaChangeConfiguration (map options ) {
@@ -46,7 +47,8 @@ define boolean IrdaChangeConfiguration (map options ) {
 }
 
 /**
- * Handler for enabling
+ * Command line handler for enabling IrDA
+ * @param options  a list of parameters passed as args
  */
 define boolean IrdaEnableHandler (map options) {
 
@@ -60,7 +62,7 @@ define boolean IrdaEnableHandler (map options) {
 }
 
 /**
- * Handler for disabling
+ * Command line handler for disabling IrDA
  */
 define boolean IrdaDisableHandler (map options) {
 
