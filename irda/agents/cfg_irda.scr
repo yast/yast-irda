@@ -1,0 +1,17 @@
+/**
+ * File:
+ *   cfg_irda.scr
+ * Summary:
+ *   SCR Agent for reading/writing /etc/sysconfig/irda
+ *   using the sysconfig-agent
+ *
+ * $Id$
+ *
+ * Read/Sets the values defined in <tt>/etc/sysconfig/irda</tt>
+ * in an easy manner.
+ */
+.sysconfig.irda
+
+`ag_ini(
+  `SysConfigFile("/etc/sysconfig/irda")
+)

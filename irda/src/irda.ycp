@@ -1,0 +1,128 @@
+/**
+ * File:	clients/irda.ycp
+ * Package:	Configuration of irda
+ * Summary:	Main file
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ *
+ * Main file for irda configuration. Uses all other files.
+ */
+
+{
+
+/***
+ * <h3>Configuration of irda</h3>
+ */
+
+textdomain "irda";
+
+/* The main () */
+y2milestone ("----------------------------------------");
+y2milestone ("Irda module started");
+
+import "CommandLine";
+import "Irda";
+
+include "irda/ui.ycp";
+
+// --------------------------------------------------------------------------
+// --------------------------------- cmd-line handlers
+
+/**
+ * Command line handler for changing basic configuration
+ * @param options  a list of parameters passed as args
+ * (currently only "port" key is expected)
+ * @return boolean true on success
+ */
+define boolean IrdaChangeConfiguration (map options ) {
+
+    string port = options["port"]:"";
+    if (port != "")
+    {
+	Irda::port	= port;
+	return true;
+    }
+    return false;
+}
+
+/**
+ * Command line handler for enabling IrDA
+ * @param options  a list of parameters passed as args
+ */
+define boolean IrdaEnableHandler (map options) {
+
+    boolean ret = IrdaChangeConfiguration (options);
+    if (!Irda::start)
+    {
+	Irda::start	= true;
+	ret		= true;
+    }
+    return ret;
+}
+
+/**
+ * Command line handler for disabling IrDA
+ */
+define boolean IrdaDisableHandler (map options) {
+
+    if (Irda::start)
+    {
+	Irda::start	= false;
+	return true;
+    }
+    return false;
+}
+
+map cmdline_description = $[
+    "id"		: "irda",
+    /* Command line help text for the Xirda module */
+    "help"		: _("Configuration of IrDA"),
+    "guihandler"        : IrDASequence,
+    "initialize"        : Irda::Read,
+    "finish"            : Irda::Write,
+    "actions"           : $[
+	"enable" :$[
+	    "handler"	: IrdaEnableHandler,
+	    // command line help text for 'enable' action
+	    "help"	: _("Enable IrDA")
+	],
+	"disable" :$[
+	    "handler"	: IrdaDisableHandler,
+	    // command line help text for 'disable' action
+	    "help"	: _("Disable IrDA")
+	],
+	"configure"	: $[
+	    "handler"	: IrdaChangeConfiguration,
+	    // command line help text for 'configure' action
+	    "help"	: _("Change the IrDA configuration")
+	],
+    ],
+    "options"		: $[
+	"port"	:$[
+	    // command line help text for the 'port' option
+	    "help"	: _("Serial port"),
+	    "type"	: "string"
+	],
+    ],
+    "mappings"		: $[
+	"enable"	: [ "port" ],
+	"disable"	: [],
+	"configure"	: [ "port" ],
+    ]
+];
+
+
+/* main ui function */
+any ret = CommandLine::Run (cmdline_description);
+
+y2debug("ret=%1", ret);
+
+/* Finish */
+y2milestone("Irda module finished");
+y2milestone("----------------------------------------");
+
+return ret;
+
+/* EOF */
+}

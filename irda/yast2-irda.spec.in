@@ -1,0 +1,30 @@
+@HEADER-COMMENT@
+# neededforbuild yast2-devel-packages
+
+@HEADER@
+Requires:	yast2
+
+BuildArchitectures:	noarch
+
+Summary:	Configuration of irda
+
+%description
+-
+
+@PREP@
+
+@BUILD@
+
+@INSTALL@
+
+@CLEAN@
+
+%files
+%defattr(-,root,root)
+%dir @yncludedir@/irda
+@yncludedir@/irda/*
+@clientdir@/irda.ycp
+@moduledir@/Irda.*
+@desktopdir@/irda.desktop
+@scrconfdir@/*.scr
+%doc @docdir@
