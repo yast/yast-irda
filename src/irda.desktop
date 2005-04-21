@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstResource=irda
 
-Icon=irda
+Icon=yast-irda
 Exec=/sbin/yast2 irda 
 
 Name=Infrared device
