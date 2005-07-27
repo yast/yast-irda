@@ -19,6 +19,6 @@ X-SuSE-YaST-AutoInstResource=irda
 Icon=yast-irda
 Exec=/sbin/yast2 irda 
 
-Name=Infrared device
-GenericName=Configure Infrared device (IrDA)
+Name=Infrared Device
+GenericName=Configure an Infrared device (IrDA)
 X-KDE-SubstituteUID=true
