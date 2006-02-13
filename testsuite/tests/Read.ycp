@@ -2,7 +2,7 @@
  *  Read.ycp
  *  Test of Irda::Read function
  *  Author: Jiri Suchomel <jsuchome@suse.cz>
- *  $Id: Read.ycp 22830 2005-03-29 10:53:59Z jsuchome $
+ *  $Id$
  */
 
 {

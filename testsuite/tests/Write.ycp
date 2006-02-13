@@ -2,7 +2,7 @@
  *  Write.ycp
  *  Test of Irda::Write function
  *  Author: Jiri Suchomel <jsuchome@suse.cz>
- *  $Id: Write.ycp 22830 2005-03-29 10:53:59Z jsuchome $
+ *  $Id$
  */
 
 {
