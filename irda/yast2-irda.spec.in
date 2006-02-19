@@ -1,0 +1,30 @@
+@HEADER-COMMENT@
+
+@HEADER@
+BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files yast2 yast2-devtools yast2-testsuite
+Requires:	yast2
+
+BuildArchitectures:	noarch
+
+Summary:	Configuration of irda
+
+%description
+-
+
+@PREP@
+
+@BUILD@
+
+@INSTALL@
+
+@CLEAN@
+
+%files
+%defattr(-,root,root)
+%dir @yncludedir@/irda
+@yncludedir@/irda/*
+@clientdir@/irda.ycp
+@moduledir@/Irda.*
+@desktopdir@/irda.desktop
+@scrconfdir@/*.scr
+%doc @docdir@

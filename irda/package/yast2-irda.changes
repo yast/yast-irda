@@ -1,0 +1,93 @@
+-------------------------------------------------------------------
+Sun Feb 19 17:56:36 CET 2006 - jsrain@suse.cz
+
+- updated BuidRequires (removed yast2-devel-packages macro)
+- 2.13.1
+
+-------------------------------------------------------------------
+Tue Dec 20 17:30:59 CET 2005 - jsuchome@suse.cz
+
+- new version for new product version
+- 2.13.0 
+
+-------------------------------------------------------------------
+Thu Jul 28 11:29:46 CEST 2005 - jsuchome@suse.cz
+
+- updated desktop file
+- 2.12.1 
+
+-------------------------------------------------------------------
+Thu Mar 31 14:39:27 CEST 2005 - jsuchome@suse.cz
+
+- save changes done via command-line interface
+- changed name in desktop file (#71005)
+- added testsuite
+- 2.12.0
+
+-------------------------------------------------------------------
+Wed Mar  2 09:06:01 CET 2005 - jsuchome@suse.cz
+
+- merged texts from proofread
+
+-------------------------------------------------------------------
+Mon Feb  7 16:03:38 CET 2005 - jsuchome@suse.cz
+
+- merged texts from proofread
+- 2.11.2
+
+-------------------------------------------------------------------
+Thu Nov 18 16:25:34 CET 2004 - jsuchome@suse.cz
+
+- possibility to modify MAX_BAUD_RATE (#40814) 
+- ask for creating the pilot link
+- 2.11.1
+
+-------------------------------------------------------------------
+Tue Nov  9 13:14:59 CET 2004 - jsuchome@suse.cz
+
+- created link for /dev/pilot (#47804)
+- 2.11.0
+
+-------------------------------------------------------------------
+Fri Oct 29 15:35:44 CEST 2004 - jsuchome@suse.cz
+
+- fixed desktop file (#45990) 
+
+-------------------------------------------------------------------
+Thu Sep 23 11:00:08 CEST 2004 - jsuchome@suse.cz
+
+- do not rewrite sysconfig/irda file with empty one (#45353)
+- 2.10.3
+
+-------------------------------------------------------------------
+Wed Sep  1 15:27:48 CEST 2004 - jsuchome@suse.cz
+
+- updated desktop file
+- 2.10.2
+
+-------------------------------------------------------------------
+Mon Aug 16 15:06:56 CEST 2004 - jsuchome@suse.cz
+
+- 2.10.1
+
+-------------------------------------------------------------------
+Tue Aug 10 08:39:59 CEST 2004 - jsuchome@suse.cz
+
+- merged proofread texts
+
+-------------------------------------------------------------------
+Thu Aug  5 16:49:46 CEST 2004 - jsuchome@suse.cz
+
+- added basic documentation
+
+-------------------------------------------------------------------
+Thu Jul 29 17:42:22 CEST 2004 - jsuchome@suse.cz
+
+- initial help text
+- fix writing
+- show also /proc/net/irda/discovery during test
+
+-------------------------------------------------------------------
+Wed Jul 21 09:57:03 2004 - jsuchome@suse.cz
+
+- initial version
