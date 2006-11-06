@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov  6 12:03:26 CET 2006 - jsuchome@suse.cz
+
+- new version for new product
+- 2.14.0  
+
+-------------------------------------------------------------------
 Sun Feb 19 17:56:36 CET 2006 - jsrain@suse.cz
 
 - updated BuidRequires (removed yast2-devel-packages macro)
