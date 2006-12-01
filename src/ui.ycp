@@ -90,8 +90,8 @@ define boolean TestPopup (string port) {
     UI::CloseDialog();
     if (start != "")
     {
-	Popup::Error (sformat ("%1
-%2", Message::CannotStartService ("irda"), start));
+	y2error ("irda service returns: %1", start);
+	Popup::Error (Message::CannotStartService ("irda"));
 	irda_tmp_stop ();
 	return false;
     }

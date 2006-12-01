@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec  1 17:05:21 CET 2006 - jsuchome@suse.cz
+
+- do not show untranslated messages (#221701)
+- 2.13.2 
+
+-------------------------------------------------------------------
 Sun Feb 19 17:56:36 CET 2006 - jsrain@suse.cz
 
 - updated BuidRequires (removed yast2-devel-packages macro)
