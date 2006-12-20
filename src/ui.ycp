@@ -97,7 +97,7 @@ define boolean TestPopup (string port) {
     }
 
     // run test application
-    SCR::Execute (.background.run_output, "/usr/bin/irdadump");
+    SCR::Execute (.background.run_output, "irdadump");
 
     // construct the dialog
     UI::OpenDialog(`opt(`decorated), `HBox(`HSpacing(1.5),
@@ -161,12 +161,12 @@ define boolean TestPopup (string port) {
 	}
 	if (ret == `cont)
 	{
-	    SCR::Execute (.background.run_output, "/usr/bin/irdadump");
+	    SCR::Execute (.background.run_output, "irdadump");
 	    UI::ChangeWidget (`id (`stop), `Enabled, true);
 	    UI::ChangeWidget (`id (`cont), `Enabled, false);
 	    ret = nil;
 	}
-	sleep (10);
+	sleep (100);
     }
     while (ret == nil);
 
