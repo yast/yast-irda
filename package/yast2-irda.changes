@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 20 15:17:18 CET 2006 - jsuchome@suse.cz
+
+- do not use full path for irdadump (#229730)
+- 2.13.3 
+
+-------------------------------------------------------------------
 Fri Dec  1 17:05:21 CET 2006 - jsuchome@suse.cz
 
 - do not show untranslated messages (#221701)
