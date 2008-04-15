@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 15 13:46:11 CEST 2008 - jsuchome@suse.cz
+
+- added label to expert discovery logview widget (bnc#371173)
+- 2.16.1
+
+-------------------------------------------------------------------
 Mon Apr 14 10:03:51 CEST 2008 - jsuchome@suse.cz
 
 - 2.16.0 

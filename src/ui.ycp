@@ -110,7 +110,9 @@ define boolean TestPopup (string port) {
         `VSpacing(0.5),
         `LogView (`id (`log), "", 8, 0),
         `VSpacing(0.5),
-        `LogView (`id (`discovery), "", 5, 0),
+        `LogView (`id (`discovery),
+	    // log view label (log will contain english messages)
+	    _("Discovery log (kernel diagnostics)"), 5, 0),
         `VSpacing(0.5),
 	`HBox (
 	    `PushButton (`id(`done), `opt(`key_F9), Label::CloseButton ()),
