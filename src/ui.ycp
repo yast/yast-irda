@@ -81,7 +81,7 @@ define boolean TestPopup (string port) {
         // Wait text label
         `Label(_("Initializing -- please wait...")),
         `VSpacing(1),
-        `PushButton(`id(`done), `opt(`default), Label::AbortButton()),
+        `PushButton(`id(`done), `opt(`default), Label::CancelButton()),
         `VSpacing(1)),
     `HSpacing(1.5)
     ));
@@ -253,8 +253,7 @@ define symbol IrDADialog () {
     ), `HSpacing(3));
 
 
-    Wizard::SetContentsButtons (caption, con, help,
-	Label::BackButton (), Label::FinishButton());
+    Wizard::SetContents (caption, con, help, true, true);
 
     UI::ChangeWidget (`id(`ports), `Value, port);
 
@@ -342,7 +341,7 @@ Create it now?")))
  */
 define symbol IrDASequence () {
 
-    Wizard::CreateDialog();
+    Wizard::OpenOKDialog ();
     Wizard::SetDesktopIcon("irda");
 
     Irda::Read ();
