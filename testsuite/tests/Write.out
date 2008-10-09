@@ -2,7 +2,7 @@ Dump	==== nothing modified: =====================
 Return	true
 Dump	==== stop irda: ============================
 Read	.init.scripts.exists "irda" true
-Execute	.target.bash "/etc/init.d/irda stop" $["TERM":"raw"] 0
+Execute	.target.bash_output "/etc/init.d/irda stop" $["TERM":"raw"] $["exit":0]
 Read	.init.scripts.exists "irda" true
 Read	.init.scripts.exists "irda" true
 Read	.init.scripts.exists "irda" true
@@ -14,9 +14,9 @@ Dump	==== start irda, create link: ==============
 Write	.sysconfig.irda.IRDA_PORT "new_port" true
 Write	.sysconfig.irda nil true
 Read	.init.scripts.exists "irda" true
-Execute	.target.bash "/etc/init.d/irda stop" $["TERM":"raw"] 0
+Execute	.target.bash_output "/etc/init.d/irda stop" $["TERM":"raw"] $["exit":0]
 Read	.init.scripts.exists "irda" true
-Execute	.target.bash "/etc/init.d/irda start" $["TERM":"raw"] 0
+Execute	.target.bash_output "/etc/init.d/irda start" $["TERM":"raw"] $["exit":0]
 Read	.init.scripts.exists "irda" true
 Read	.init.scripts.exists "irda" true
 Read	.init.scripts.exists "irda" true
