@@ -40,11 +40,6 @@ global string port	= "";
 global string max_baud_rate	= "0";
 
 /**
- * If link to /ev/pilot should be created
- */
-global boolean link_pilot	= false;
-
-/**
  * Read irda settings from /etc/sysconfig/irda
  * @return true when file exists
  */
@@ -126,15 +121,6 @@ global define boolean Write () {
     else
     {
 	Service::Disable ("irda");
-    }
-
-    // create symlink to /dev/pilot (#47804)
-    if (link_pilot)
-    {
-	if ((boolean)SCR::Execute (.target.symlink,"/dev/ircomm0","/dev/pilot"))
-	{
-	    SCR::Execute (.target.bash, "/sbin/resmgr add /dev/pilot desktop");
-	}
     }
 
     Progress::NextStage();

@@ -23,6 +23,4 @@ Read	.init.scripts.exists "irda" true
 Read	.init.scripts.runlevel "irda" $[]
 Read	.init.scripts.comment "irda" $[]
 Execute	.target.bash_output "/sbin/insserv -d /etc/init.d/irda" $["exit":0]
-Execute	.target.symlink "/dev/ircomm0" "/dev/pilot" true
-Execute	.target.bash "/sbin/resmgr add /dev/pilot desktop" 0
 Return	true

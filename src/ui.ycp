@@ -321,17 +321,6 @@ define symbol IrDADialog () {
 	Irda::start		= start;
 	Irda::port		= port;
 	Irda::max_baud_rate	= baud_rate;
-
-	if (start &&
-	    SCR::Read (.target.size, "/dev/pilot") == -1 &&
-	    Package::Installed ("pilot-link") &&
-	    // yes/no popup
-	    Popup::YesNo (_("If you have a Palm device using an IrDA port,
-it is useful to have a symbolic link between the IR device and the pilot device.
-Create it now?")))
-	{
-	    Irda::link_pilot	= true;
-	}
     }
     return ret;
 }

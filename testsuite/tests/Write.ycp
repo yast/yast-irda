@@ -51,7 +51,6 @@
     Testsuite::Dump ("==== start irda, create link: ==============");
 
     Irda::start		= true;
-    Irda::link_pilot	= true;
     Irda::port		= "new_port";
     READ["init","scripts","runlevel"]	= $[];
 
