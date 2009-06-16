@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 16 14:27:38 CEST 2009 - mvidner@suse.cz
+
+- Using autodocs-ycp.ami, which contains a fix for automake 1.11.
+
+-------------------------------------------------------------------
 Thu Oct 16 13:00:41 CEST 2008 - jsuchome@suse.cz
 
 - removed obsolete code for /dev/pilot (bnc#435993)
