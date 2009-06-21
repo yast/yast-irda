@@ -9,7 +9,8 @@ BuildArchitectures:	noarch
 Summary:	YaST2 - Infra-Red (IrDA) Access Configuration
 
 %description
--
+The YaST2 component for configuring the Infra-red Data Access (IrDA)
+stack.
 
 @PREP@
 
