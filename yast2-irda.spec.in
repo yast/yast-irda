@@ -6,7 +6,7 @@ Requires:	yast2
 
 BuildArchitectures:	noarch
 
-Summary:	Configuration of irda
+Summary:	YaST2 - Infra-Red (IrDA) Access Configuration
 
 %description
 -
