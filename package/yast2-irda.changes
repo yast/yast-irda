@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep  3 14:21:08 CEST 2009 - jsuchome@suse.cz
+
+- added keywords to desktop files
+- 2.18.0
+
+-------------------------------------------------------------------
 Tue Jun 16 14:27:38 CEST 2009 - mvidner@suse.cz
 
 - Using autodocs-ycp.ami, which contains a fix for automake 1.11.
