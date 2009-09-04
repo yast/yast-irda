@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep  4 12:25:48 CEST 2009 - ug@suse.de
+
+- fixed typo in the desktop file which makes yast2-schema fail
+- 2.18.1
+
+-------------------------------------------------------------------
 Thu Sep  3 14:21:08 CEST 2009 - jsuchome@suse.cz
 
 - added keywords to desktop files
