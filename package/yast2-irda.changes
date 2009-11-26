@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 26 16:20:52 CET 2009 - jsuchome@suse.cz
+
+- check for `ok dialog return value (bnc#558525)
+- 2.19.0
+
+-------------------------------------------------------------------
 Fri Sep  4 12:25:48 CEST 2009 - ug@suse.de
 
 - fixed typo in the desktop file which makes yast2-schema fail

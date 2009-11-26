@@ -313,7 +313,7 @@ define symbol IrDADialog () {
 
     } while (!contains ([`back, `abort, `cancel, `next, `ok], ret));
 
-    if (ret == `next &&
+    if ((ret == `next || ret == `ok) &&
 	(start != Irda::start || port != Irda::port ||
 	baud_rate != Irda::max_baud_rate))
     {
@@ -336,7 +336,7 @@ define symbol IrDASequence () {
     Irda::Read ();
 
     symbol ret = IrDADialog ();
-    if (ret == `next || ret == `finish)
+    if (ret == `next || ret == `finish || ret == `ok)
     {
 	Irda::Write ();
     }
