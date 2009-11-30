@@ -25,9 +25,9 @@ import "Wizard";
  * @param port the serial port use for IrDA
  * (to see if it was changed and service needs to be restarted)
  */
-define boolean TestPopup (string port) {
+define boolean TestPopup (string port, string baud_rate) {
 
-    boolean modified	= port != Irda::port;
+    boolean modified	= port != Irda::port || baud_rate != Irda::max_baud_rate;
     // if service was originaly started
     boolean orig_start	= false;
 
@@ -44,15 +44,16 @@ define boolean TestPopup (string port) {
 	{
 	    // 1. save new configuration
 	    SCR::Write (.sysconfig.irda.IRDA_PORT, port);
+	    SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, baud_rate);
 	    SCR::Write (.sysconfig.irda, nil);
 	}
 
         // 2. start/restart the service
 	// when module cannot be loaded, Runlevel returns 0 -> use target.bash
 	if (!orig_start)
-	    out = (map) SCR::Execute (.target.bash_output, "rcirda start");
+	    out = Service::RunInitScriptOutput ("irda", "start");
 	else if (modified)
-	    out = (map) SCR::Execute (.target.bash_output, "rcirda restart");
+	    out = Service::RunInitScriptOutput ("irda", "restart");
 
 	return out["stderr"]:"";
     }
@@ -66,6 +67,7 @@ define boolean TestPopup (string port) {
 	if (modified)
 	{
 	    SCR::Write (.sysconfig.irda.IRDA_PORT, Irda::port);
+	    SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, Irda::max_baud_rate);
 	    SCR::Write (.sysconfig.irda, nil);
 	}
 
@@ -308,7 +310,7 @@ define symbol IrDADialog () {
 	}
 	if (ret == `test)
 	{
-	    TestPopup (port);
+	    TestPopup (port, baud_rate);
 	}
 
     } while (!contains ([`back, `abort, `cancel, `next, `ok], ret));

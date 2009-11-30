@@ -107,8 +107,12 @@ global define boolean Write () {
     if (port != "")
     {
 	SCR::Write (.sysconfig.irda.IRDA_PORT, port);
-	SCR::Write (.sysconfig.irda, nil);
     }
+    if (max_baud_rate != nil)
+    {
+	SCR::Write (.sysconfig.irda.IRDA_MAX_BAUD_RATE, max_baud_rate);
+    }
+    SCR::Write (.sysconfig.irda, nil);
 
     Progress::NextStage ();
 

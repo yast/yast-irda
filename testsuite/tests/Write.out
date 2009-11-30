@@ -1,6 +1,8 @@
 Dump	==== nothing modified: =====================
 Return	true
 Dump	==== stop irda: ============================
+Write	.sysconfig.irda.IRDA_MAX_BAUD_RATE "0" true
+Write	.sysconfig.irda nil true
 Read	.init.scripts.exists "irda" true
 Execute	.target.bash_output "/etc/init.d/irda stop" $["TERM":"raw"] $["exit":0]
 Read	.init.scripts.exists "irda" true
@@ -12,6 +14,7 @@ Execute	.target.bash_output "/sbin/insserv -r /etc/init.d/irda" $["exit":0]
 Return	true
 Dump	==== start irda, create link: ==============
 Write	.sysconfig.irda.IRDA_PORT "new_port" true
+Write	.sysconfig.irda.IRDA_MAX_BAUD_RATE "0" true
 Write	.sysconfig.irda nil true
 Read	.init.scripts.exists "irda" true
 Execute	.target.bash_output "/etc/init.d/irda stop" $["TERM":"raw"] $["exit":0]
