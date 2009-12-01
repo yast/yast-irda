@@ -9,4 +9,3 @@ tmp.log*
 config
 run
 *.test
-tests

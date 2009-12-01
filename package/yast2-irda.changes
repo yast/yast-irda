@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec  1 16:30:55 CET 2009 - jsuchome@suse.cz
+
+- save baud rate (bnc#558525)
+- check for `ok dialog return value (bnc#558525)
+- 2.17.3 
+
+-------------------------------------------------------------------
 Thu Oct 16 13:00:41 CEST 2008 - jsuchome@suse.cz
 
 - removed obsolete code for /dev/pilot (bnc#435993)
