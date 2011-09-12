@@ -1,10 +1,7 @@
 Dump	==== reading... ============================
-Read	.init.scripts.exists "irda" true
-Execute	.target.bash "/etc/init.d/irda status" $["TERM":"raw"] 0
 Return	true
 Dump	============================================
 Read	.sysconfig.irda.IRDA_PORT "/dev/ttyS1"
 Read	.sysconfig.irda.IRDA_MAX_BAUD_RATE nil
-Read	.init.scripts.exists "irda" true
-Execute	.target.bash "/etc/init.d/irda status" $["TERM":"raw"] 0
+Execute	.target.bash "/sbin/service irda status" $["TERM":"raw"] 0
 Return	true

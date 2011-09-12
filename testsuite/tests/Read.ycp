@@ -17,6 +17,7 @@
 		"exists"	: true
 	    ],
 	],
+	// no sysconfig file
 	"target": $[
 	    "stat"	: $[],
 	]
@@ -35,7 +36,7 @@
 	    ],
 	],
 	"target": $[
-	    "stat"	: $[ 1:2 ],
+	    "stat"	: $[ "isreg" : true ],
 	],
 	"sysconfig"	: $[
 	    "irda"	: $[
