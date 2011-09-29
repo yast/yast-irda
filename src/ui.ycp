@@ -333,7 +333,7 @@ define symbol IrDADialog () {
 define symbol IrDASequence () {
 
     Wizard::OpenOKDialog ();
-    Wizard::SetDesktopIcon("irda");
+    Wizard::SetDesktopTitleAndIcon("irda");
 
     Irda::Read ();
 

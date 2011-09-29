@@ -4,7 +4,7 @@
 Group:	System/YaST
 License: GPLv2+
 BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files yast2 yast2-devtools yast2-testsuite
-Requires:	yast2
+Requires:	yast2 >= 2.21.22
 
 BuildArchitectures:	noarch
 

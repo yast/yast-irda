@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 29 10:47:05 CEST 2011 - visnov@suse.cz
+
+- set dialog title
+- 2.21.1 
+
+-------------------------------------------------------------------
 Mon Sep 12 13:26:23 UTC 2011 - lslezak@suse.cz
 
 - updated testsuite (systemd support) (bnc#664548)
