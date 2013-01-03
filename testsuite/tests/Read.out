@@ -3,5 +3,5 @@ Return	true
 Dump	============================================
 Read	.sysconfig.irda.IRDA_PORT "/dev/ttyS1"
 Read	.sysconfig.irda.IRDA_MAX_BAUD_RATE nil
-Execute	.target.bash "/sbin/service irda status" $["TERM":"raw"] 0
+Execute	.target.bash "/bin/systemctl status irda.service" $["TERM":"raw"] 0
 Return	true
