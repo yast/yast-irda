@@ -3,7 +3,9 @@
 @HEADER@
 Group:          System/YaST
 License:        GPL-2.0
-BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files yast2 yast2-devtools yast2-testsuite
+BuildRequires:	docbook-xsl-stylesheets doxygen libxslt perl-XML-Writer sgml-skel update-desktop-files yast2-devtools yast2-testsuite
+# Service module switched to systemd
+BuildRequires:	yast2 >= 2.23.15
 Requires:	yast2 >= 2.21.22
 
 BuildArchitectures:	noarch
