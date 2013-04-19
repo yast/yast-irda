@@ -4,8 +4,7 @@ Dump	==== stop irda: ============================
 Write	.sysconfig.irda.IRDA_MAX_BAUD_RATE "0" true
 Write	.sysconfig.irda nil true
 Execute	.target.bash_output "/bin/systemctl stop irda.service" $["TERM":"raw"] $["exit":0]
-Read	.init.scripts.runlevel "irda" $["irda":$["start":[3]]]
-Read	.init.scripts.comment "irda" $[]
+Execute	.target.bash "/bin/systemctl is-enabled irda.service" 0
 Execute	.target.bash_output "/bin/systemctl  disable irda.service" $["exit":0]
 Return	true
 Dump	==== start irda, create link: ==============
@@ -14,7 +13,5 @@ Write	.sysconfig.irda.IRDA_MAX_BAUD_RATE "0" true
 Write	.sysconfig.irda nil true
 Execute	.target.bash_output "/bin/systemctl stop irda.service" $["TERM":"raw"] $["exit":0]
 Execute	.target.bash_output "/bin/systemctl start irda.service" $["TERM":"raw"] $["exit":0]
-Read	.init.scripts.runlevel "irda" $[]
-Read	.init.scripts.comment "irda" $[]
-Execute	.target.bash_output "/bin/systemctl enable irda.service" $["exit":0]
+Execute	.target.bash "/bin/systemctl is-enabled irda.service" 0
 Return	true
