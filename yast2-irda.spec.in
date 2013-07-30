@@ -10,6 +10,8 @@ Requires:	yast2 >= 2.21.22
 
 BuildArchitectures:	noarch
 
+Requires:       yast2-ruby-bindings >= 1.0.0
+
 Summary:	YaST2 - Infra-Red (IrDA) Access Configuration
 
 %description
@@ -28,7 +30,7 @@ stack.
 %defattr(-,root,root)
 %dir @yncludedir@/irda
 @yncludedir@/irda/*
-@clientdir@/irda.ycp
+@clientdir@/irda.rb
 @moduledir@/Irda.*
 @desktopdir@/irda.desktop
 @scrconfdir@/*.scr
